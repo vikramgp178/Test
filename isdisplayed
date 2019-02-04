@@ -1,0 +1,132 @@
+package testCases;
+
+import java.io.IOException;
+import java.util.NoSuchElementException;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import pageObjects.CreateUserPage;
+import pageObjects.LoginPage;
+import resources.Baseutil;
+import utils.CreateUniqueUserData;
+
+public class CreateUserTest extends Baseutil {
+	public static String randomUser, randomEmailId;
+	LoginPage LoginPageObj = new LoginPage(driver);
+	CreateUniqueUserData creatUniquser = new CreateUniqueUserData();
+	CreateUserPage CreateUserPage = new CreateUserPage(driver);
+	public LoginTest Logintest = new LoginTest();
+
+	// public static String emailstr;
+
+	@Test(priority = 4)
+	public void TC44_CreateUser() throws Exception {
+		TC_4_CreateUser();
+	}
+
+	public void TC_4_CreateUser() throws Exception {
+		System.out.println("test case 4");
+
+		Logintest = new LoginTest();
+		Logintest.TC_1_Login();
+
+		// LoginPage LoginPageObj=new LoginPage(driver);
+		// LoginPageObj.Call_Login(p.getProperty("username"),
+		// p.getProperty("password"));
+
+		CreateUserPage = new CreateUserPage(driver);
+		CreateUserPage.link_CreateUser().click();
+
+		// Verify Page Title
+		VerifyPageTitle();
+		System.out.println("Username is :" + p.getProperty("Username"));
+
+		// Enter User name:
+		// String username = read.getCellValue(6, 0);
+		creatUniquser = new CreateUniqueUserData();
+		randomUser = creatUniquser.genrateRandomString(p.getProperty("Username"));
+		System.out.println(randomUser);
+
+		CreateUserPage.txtbx_Username().sendKeys(randomUser);
+
+		// Enter Password and confirm Password
+		CreateUserPage.txtbx_Password().sendKeys(randomUser);
+		CreateUserPage.txtbx_ConfirmPassword().sendKeys(randomUser);
+
+		// Enter First Name and Last Name
+		CreateUserPage.txtbx_FirstName().sendKeys(randomUser);
+		CreateUserPage.txtbx_LastName().sendKeys(randomUser);
+
+		// Click on Gender Radio Button
+		CreateUserPage.radiobtn_Gender().click();
+
+		// Enter Address1, ZIP, City
+		// String address1 = read.getCellValue(6, 5);
+		CreateUserPage.txtbx_Address1().sendKeys(randomUser + p.getProperty("Address1"));
+		// String zip = read.getCellValue(6, 6);
+		CreateUserPage.txtbx_Zip().sendKeys(p.getProperty("Zip"));
+		// String city = read.getCellValue(6, 7);
+		CreateUserPage.txtbx_City().sendKeys(p.getProperty("City"));
+
+		// Select State Name from Drop down
+		Select sel0 = new Select(CreateUserPage.dropdwn_StateName());
+		sel0.selectByVisibleText(p.getProperty("State"));
+
+		// Enter Phone
+		// String phone = read.getCellValue(6, 8);
+		CreateUserPage.txtbx_Phone().sendKeys(p.getProperty("Phone"));
+
+		// Enter email Address and Confirm email Address
+		// emailstr = usernamestr + "@mailinator.com";
+		randomEmailId = randomUser + p.getProperty("Domain");
+		CreateUserPage.txtbx_email().sendKeys(randomEmailId);
+		CreateUserPage.txtbx_Confirmemail().sendKeys(randomEmailId);
+
+		// Select Secret Question Drop down
+		Select sel3 = new Select(CreateUserPage.dropdwn_SecretQuestion());
+		sel3.selectByValue(resources.ConstantClass.highschool);
+
+		// Enter Secret Question Answer
+		// String secretanswer = read.getCellValue(6, 11);
+
+		CreateUserPage.txtbx_SecretAnswer().sendKeys(p.getProperty("Secret_Answer"));
+
+		// Click on Save Button
+		CreateUserPage.btn_Save().click();
+		WebElement CheckPresence=driver.findElement(By.xpath("//span[@class='errorMessage']"));
+
+		if (CheckPresence.isDisplayed()) {
+			System.out.println("Element is displayed");
+		} else {
+			System.out.println("Element is not displayed");
+			CreateUserPage.link_CreateUser().click();
+			Assert.assertEquals("a", "a");
+
+		}
+
+		/*try {
+
+			// waitForElementDisplayed(CreateUserPage.get_msg_user_exist());
+			if ((CreateUserPage.get_msg_user_exist().getText().contains(p.getProperty("UserExistMessage")))
+					|| (CreateUserPage.get_msg_user_exist().getText().contains(p.getProperty("EmailExistMessage")))) {
+				System.out.println("if loop " + CreateUserPage.get_msg_user_exist().getText());
+				System.out.println("Again create new user");
+				TC_4_CreateUser();
+			} else {
+				System.out.println("New user created");
+
+			}
+		} catch (NoSuchElementException e) {
+			System.out.println("No such element ---catch");
+		} finally {
+			System.out.println("Go ahead");
+			CreateUserPage.link_CreateUser().click();
+			Assert.assertEquals("a", "a");
+		}*/
+	}
+}

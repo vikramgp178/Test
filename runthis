@@ -1,0 +1,61 @@
+package resources;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+
+public class TestLogin {
+
+	public static void main(String[] a) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver", "E:\\Software\\Selenium\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://www.mailinator.com/");
+		driver.findElement(By.xpath("//input[@placeholder='Check Any Inbox!']")).sendKeys("cpuser1080@mailinator.com");
+		
+		//Element which is not present on UI- Goq
+		WebElement CheckPresence = driver.findElement(By.xpath("//button[contains(text(),'Goq!')] "));
+
+		if (CheckPresence.isDisplayed()) {
+			try {
+				System.out.println("Element is displayed");
+			} catch (NoSuchElementException e) {
+				System.out.println("Log found " + e);
+			} finally {
+				System.out.println("finally:");
+				driver.findElement(By.xpath("//button[contains(text(),'Go!')]")).click();
+
+			}
+		} else {
+			System.out.println("Element is not displayed");
+			// CreateUserPage.link_CreateUser().click();
+			Assert.assertEquals("a", "a");
+
+		}
+
+		/*
+		 * try { List<WebElement> checkBoxList =
+		 * driver.findElements(By.cssSelector("input[type='checkbox']")); for
+		 * (WebElement checkBox : checkBoxList) { checkBox.click();
+		 * driver.findElement(By.xpath("//button[@id='trash_but']")).click();
+		 * System.out.println("clicked");
+		 * 
+		 * } } catch(Exception e) { System.out.println("No element Focund"+e); }
+		 * driver.close();
+		 */
+
+//		driver.findElement(By.xpath("//td[contains(text(),'CTC Online support')]")).click();
+//		Thread.sleep(1000);
+//		driver.switchTo().frame("msg_body");
+//
+//		WebElement body = driver.findElement(By.xpath("html/body"));
+//		
+//		System.out.println(body.getText());
+
+	}
+
+}

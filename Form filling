@@ -1,0 +1,70 @@
+package masters_1;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+
+public class googleform {
+
+	public WebDriver driver;
+	@Test(priority=0)
+	public void openpage() {
+	
+		System.setProperty("webdriver.gecko.driver","C:\\Program Files\\Java\\geckodriver-v0.18.0-win64\\geckodriver.exe");
+		// Open browser
+		driver = new FirefoxDriver();
+	}
+	
+		@Test(dataProvider="TestData",priority=1)
+			public void googleform(String U_name, String p_word) {	
+	
+		driver.get("https://www.toolsqa.com/automation-practice-form/");
+		
+		
+		driver.findElement(By.name("firstname")).sendKeys(U_name);
+		
+		driver.findElement(By.name("lastname")).sendKeys(p_word);
+	}
+		
+@DataProvider(name="TestData")
+	
+	
+	public  Object[][] readExcel() throws BiffException, IOException{
+		File f =new File("E://temp//U_password1.xls");// Write your excel path here
+		Workbook Wb= Workbook.getWorkbook(f);
+		Sheet s =Wb.getSheet("Sheet1");
+		int rows =s.getRows();
+		int columns= s.getColumns();
+		//String array1[]= new String[100];
+
+		String inputData [][]=new String[rows][columns];
+		//int index =0;
+				
+		for (int i=0;i<rows;i++){
+			for (int j=0;j<columns;j++){
+				Cell c= s.getCell(j,i);
+				
+				//array1[index]=c.getContents();
+				//index=index+1;
+				
+				inputData[i][j]=c.getContents();				
+				//System.out.println(inputData[i][j]);
+						
+			}
+		}
+		return inputData;
+		 
+	}
+	
+	
+}

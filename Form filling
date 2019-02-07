@@ -38,8 +38,8 @@ public class googleform {
 		
 @DataProvider(name="TestData")
 	
+public  Object[][] readExcel() throws BiffException, IOException{
 	
-	public  Object[][] readExcel() throws BiffException, IOException{
 		File f =new File("E://temp//U_password1.xls");// Write your excel path here
 		Workbook Wb= Workbook.getWorkbook(f);
 		Sheet s =Wb.getSheet("Sheet1");
